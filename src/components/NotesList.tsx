@@ -7,7 +7,7 @@ function NotesList() {
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/notes")
+    fetch("https://productivity-app-backend-m4za.onrender.com/notes")
       .then((res) => res.json())
       .then(setNotes);
   }, []);
@@ -16,7 +16,7 @@ function NotesList() {
     e.preventDefault();
     if (!content.trim()) return;
 
-    const res = await fetch("http://localhost:3000/notes", {
+    const res = await fetch("https://productivity-app-backend-m4za.onrender.com/notes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content }),
@@ -32,7 +32,7 @@ function NotesList() {
     if (!newContent) return;
 
     const res = await fetch(
-      `http://localhost:3000/notes/${note.id}`,
+      `https://productivity-app-backend-m4za.onrender.com/notes/${note.id}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -48,7 +48,7 @@ function NotesList() {
   }
 
   async function deleteNote(id) {
-    await fetch(`http://localhost:3000/notes/${id}`, {
+    await fetch(`https://productivity-app-backend-m4za.onrender.com/notes/${id}`, {
       method: "DELETE",
     });
 

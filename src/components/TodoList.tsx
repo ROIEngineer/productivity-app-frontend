@@ -12,7 +12,7 @@ function TodoList() {
   const handleDeleteTodo = useCallback(async (id: number) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/todos/${id}`,
+        `https://productivity-app-backend-m4za.onrender.com/todos/${id}`,
         { method: "DELETE" }
       );
 
@@ -29,7 +29,7 @@ function TodoList() {
   const handleToggleTodo = useCallback(async (todo: Todo) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/todos/${todo.id}`,
+        `https://productivity-app-backend-m4za.onrender.com/todos/${todo.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -55,7 +55,7 @@ function TodoList() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/todos/${todo.id}`,
+        `https://productivity-app-backend-m4za.onrender.com/todos/${todo.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -76,7 +76,7 @@ function TodoList() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const response = await fetch("http://localhost:3000/todos");
+        const response = await fetch("https://productivity-app-backend-m4za.onrender.com/todos");
 
         if (!response.ok) {
           throw new Error("Failed to fetch todos");
@@ -103,7 +103,7 @@ function TodoList() {
     if (!newTodo.trim()) return;
 
     try {
-      const response = await fetch("http://localhost:3000/todos", {
+      const response = await fetch("https://productivity-app-backend-m4za.onrender.com/todos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
