@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
 import { useCallback } from "react";
 import { Todo } from "../types";
+import API_URL from "../config/api";
 
 function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -12,7 +13,7 @@ function TodoList() {
   const handleDeleteTodo = useCallback(async (id: number) => {
     try {
       const response = await fetch(
-        `https://productivity-app-backend-m4za.onrender.com/todos/${id}`,
+        `${API_URL}/todos/${id}`,
         { method: "DELETE" }
       );
 
@@ -29,7 +30,7 @@ function TodoList() {
   const handleToggleTodo = useCallback(async (todo: Todo) => {
     try {
       const response = await fetch(
-        `https://productivity-app-backend-m4za.onrender.com/todos/${todo.id}`,
+        `${API_URL}/todos/${todo.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -55,7 +56,7 @@ function TodoList() {
 
     try {
       const response = await fetch(
-        `https://productivity-app-backend-m4za.onrender.com/todos/${todo.id}`,
+        `${API_URL}/todos/${todo.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -76,7 +77,7 @@ function TodoList() {
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const response = await fetch("https://productivity-app-backend-m4za.onrender.com/todos");
+        const response = await fetch(`${API_URL}/todos`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch todos");
@@ -103,7 +104,7 @@ function TodoList() {
     if (!newTodo.trim()) return;
 
     try {
-      const response = await fetch("https://productivity-app-backend-m4za.onrender.com/todos", {
+      const response = await fetch(`${API_URL}/todos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

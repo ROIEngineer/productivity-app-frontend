@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import NoteItem from "./NoteItem";
 import { Note } from "../types";
+import API_URL from "../config/api";
 
 function NotesList() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [content, setContent] = useState("");
 
   useEffect(() => {
-    fetch("https://productivity-app-backend-m4za.onrender.com/notes")
+    fetch(`${API_URL}/notes`)
       .then((res) => res.json())
       .then(setNotes);
   }, []);
@@ -16,7 +17,7 @@ function NotesList() {
     e.preventDefault();
     if (!content.trim()) return;
 
-    const res = await fetch("https://productivity-app-backend-m4za.onrender.com/notes", {
+    const res = await fetch(`${API_URL}/notes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content }),
@@ -32,7 +33,7 @@ function NotesList() {
     if (!newContent) return;
 
     const res = await fetch(
-      `https://productivity-app-backend-m4za.onrender.com/notes/${note.id}`,
+      `${API_URL}/notes/${note.id}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -48,7 +49,7 @@ function NotesList() {
   }
 
   async function deleteNote(id) {
-    await fetch(`https://productivity-app-backend-m4za.onrender.com/notes/${id}`, {
+    await fetch(`${API_URL}/notes/${id}`, {
       method: "DELETE",
     });
 
