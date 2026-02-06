@@ -1,7 +1,7 @@
 export interface Todo {
   id: number;
   title: string;
-  completed: number; // 0 or 1
+  completed: boolean; 
 }
 
 export interface Note {

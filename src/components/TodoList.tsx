@@ -35,7 +35,7 @@ function TodoList() {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            completed: todo.completed ? 0 : 1,
+            completed: !todo.completed,
           }),
         }
       );

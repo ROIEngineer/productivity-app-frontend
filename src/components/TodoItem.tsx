@@ -13,7 +13,7 @@ function TodoItem({ todo, onDelete, onToggle, onEdit }: TodoItemProps) {
     <li style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
       <input
         type="checkbox"
-        checked={!!todo.completed}
+        checked={todo.completed}
         onChange={() => onToggle(todo)}
       />
       {todo.title}
