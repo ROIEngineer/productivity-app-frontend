@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import TodoItem from "./TodoItem";
-import { useCallback } from "react";
 import { Todo } from "../types";
 import API_URL from "../config/api";
 
@@ -12,10 +11,9 @@ function TodoList() {
 
   const handleDeleteTodo = useCallback(async (id: number) => {
     try {
-      const response = await fetch(
-        `${API_URL}/todos/${id}`,
-        { method: "DELETE" }
-      );
+      const response = await fetch(`${API_URL}/todos/${id}`, {
+        method: "DELETE",
+      });
 
       if (!response.ok && response.status !== 204) {
         throw new Error("Failed to delete todo");
@@ -23,22 +21,23 @@ function TodoList() {
 
       setTodos((prev) => prev.filter((todo) => todo.id !== id));
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
     }
   }, []);
 
   const handleToggleTodo = useCallback(async (todo: Todo) => {
     try {
-      const response = await fetch(
-        `${API_URL}/todos/${todo.id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            completed: !todo.completed,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/todos/${todo.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          completed: !todo.completed,
+        }),
+      });
 
       const updated = await response.json();
 
@@ -46,7 +45,11 @@ function TodoList() {
         prev.map((t) => (t.id === updated.id ? updated : t))
       );
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
     }
   }, []);
 
@@ -55,14 +58,11 @@ function TodoList() {
     if (!newTitle) return;
 
     try {
-      const response = await fetch(
-        `${API_URL}/todos/${todo.id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title: newTitle }),
-        }
-      );
+      const response = await fetch(`${API_URL}/todos/${todo.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: newTitle }),
+      });
 
       const updated = await response.json();
 
@@ -70,7 +70,11 @@ function TodoList() {
         prev.map((t) => (t.id === updated.id ? updated : t))
       );
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
     }
   }, []);
 
@@ -86,7 +90,11 @@ function TodoList() {
         const data = await response.json();
         setTodos(data);
       } catch (err) {
-        setError(err.message);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Something went wrong");
+        }
       } finally {
         setIsLoading(false);
       }
@@ -94,9 +102,6 @@ function TodoList() {
 
     fetchTodos();
   }, []);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
 
   async function handleAddTodo(e: React.FormEvent) {
     e.preventDefault();
@@ -106,9 +111,7 @@ function TodoList() {
     try {
       const response = await fetch(`${API_URL}/todos`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: newTodo }),
       });
 
@@ -121,9 +124,16 @@ function TodoList() {
       setTodos((prev) => [...prev, createdTodo]);
       setNewTodo("");
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
     }
   }
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
@@ -144,7 +154,13 @@ function TodoList() {
       ) : (
         <ul>
           {todos.map((todo) => (
-            <TodoItem key={todo.id} todo={todo} onDelete={handleDeleteTodo} onToggle={handleToggleTodo} onEdit={handleEditTodo} />
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onDelete={handleDeleteTodo}
+              onToggle={handleToggleTodo}
+              onEdit={handleEditTodo}
+            />
           ))}
         </ul>
       )}
